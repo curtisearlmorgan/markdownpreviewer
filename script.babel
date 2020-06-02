@@ -1,0 +1,78 @@
+class Previewer extends React.Component {
+  render(){
+    return (
+    <div id="prevCont">
+      <h1>Markdown Previewer</h1>
+      <div id="preview" dangerouslySetInnerHTML={this.props.markup}></div>
+    </div>    
+    );
+  }
+}
+
+class Editor extends React.Component {
+  render(){
+    return ( 
+    <div id="editCont">
+      <h1>Markdown Editor</h1>
+      <textarea id="editor" value={this.props.value} onChange={this.props.onChange} rows={5} cols={25}/>
+    </div>
+  );
+ }
+}
+
+class Container extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      text: `# Hello, fellow Coders!
+
+  ## Welcome to my peaches n' cream themed React Markdown Previewer.
+    
+  As most of you know, \`<div>freecodecamp</div>\`, is quite awesome. It allows you to turn your spare time into programming genius!
+
+  \`\`\`
+  // see the function below for an illustration:
+
+  function acquiringSkillz(yourTime, yourEnergy, freecodecamp) {
+    let madSkillz = freecodecamp*(yourTime+yourEnergy);
+      return madSkillz;
+    }
+  }
+  \`\`\`
+    
+  Talk about making a **bold** move!
+
+  One thing is for sure, if I were you, I'd be interested by now. [Click here](https://www.freecodecamp.com) to investigate.
+   > You won't reget it!
+
+In summary, oh freecodecamp, how do I love thee? Let me count the ways:
+  1. Thou art free, and kind to my wallet.
+  1. Thou dost provide me with ample learning resources.
+  1. Etcetera, etcetera, I think you get it....
+
+Did I mention that this was built using React?
+  ![React Logo w/ Text](https://goo.gl/Umyytc)`}
+    this.handleChange = this.handleChange.bind(this);
+    }
+ 
+createMarkup(){
+  let options = {sanitize: true};
+  return {__html: marked(this.state.text, options)};
+}  
+  
+handleChange(e){
+  this.setState({
+    text: e.target.value
+  });
+}
+  render(){
+    return(
+  <div id="wrapper">
+    <Editor onChange={this.handleChange} value={this.state.text}/>
+    <Previewer markup={this.createMarkup()} />
+  </div>
+    )    
+  }
+}
+
+ReactDOM.render(<Container />, document.getElementById("container"));
